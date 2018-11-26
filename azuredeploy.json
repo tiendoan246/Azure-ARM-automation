@@ -4,11 +4,15 @@
   "parameters": {
     "environment_name": {
       "type": "string",
-      "defaultValue": "hitachi"
+      "defaultValue": "ENVIRONMENT NAME"
+    },
+    "subscriptions_id": {
+      "type": "string",
+      "defaultValue": "YOUR SUBSCRIPTION ID"
     },
     "resource_name": {
       "type": "string",
-      "defaultValue": "hitachi"
+      "defaultValue": "RESOURCE GROUP NAME"
     },
     "Location": {
       "type": "string",
@@ -16,7 +20,7 @@
     }
   },
   "variables": {
-    "availabilitySets_electrolux_vm_set_name": "[concat(parameters('environment_name'), '-', 'vm-availability-set')]",
+    "availabilitySets_vm_set_name": "[concat(parameters('environment_name'), '-', 'vm-availability-set')]",
     "cluster_1_network_interface_name": "[concat(parameters('environment_name'), '-vm-cluster-1-interface')]",
     "cluster_2_network_interface_name": "[concat(parameters('environment_name'), '-vm-cluster-2-interface')]",
     "cluster_1_public_ip_name": "[concat(parameters('environment_name'), '-cluster-1-ip')]",
@@ -30,19 +34,20 @@
     "StorageAccountName_site": "[concat(parameters('environment_name'), 'storagesite')]",
     "StorageAccountName_vm": "[concat(parameters('environment_name'), 'storagevm')]",
     "SqlServerName": "[concat(parameters('environment_name'), '-sqlserver')]",
-    "DatabaseUserId": "doan",
-    "DatabaseUserPassword": "eaeeaffc-bd50-4892-b432-2f6ab9375aff",
-    "loadBalancers_load_balancer_id": "[concat('/subscriptions/e83b5816-76c1-4cdb-bd2f-bfecfab89dba/resourceGroups/', parameters('resource_name'), '/providers/Microsoft.Network/loadBalancers/load-balancer/frontendIPConfigurations/LoadBalancerFrontEnd')]",
-    "loadBalancers_load_balancer_id_1": "[concat('/subscriptions/e83b5816-76c1-4cdb-bd2f-bfecfab89dba/resourceGroups/', parameters('resource_name'), '/providers/Microsoft.Network/loadBalancers/load-balancer/backendAddressPools/backend-pool')]",
-    "loadBalancers_load_balancer_id_2": "[concat('/subscriptions/e83b5816-76c1-4cdb-bd2f-bfecfab89dba/resourceGroups/', parameters('resource_name'), '/providers/Microsoft.Network/loadBalancers/load-balancer/probes/health-probe')]",
-    "virtualMachines_admin_name": "doan",
-    "virtualMachines_admin_password": "Abc@12345678!",
+    "DatabaseUserId": "YOUR DATABASE USER ID",
+    "DatabaseUserPassword": "YOUR DATABASE PASSWORD",
+    "loadBalancers_load_balancer_id": "[concat('/subscriptions/', parameters('subscriptions_id'), '/resourceGroups/', parameters('resource_name'), '/providers/Microsoft.Network/loadBalancers/load-balancer/frontendIPConfigurations/LoadBalancerFrontEnd')]",
+    "loadBalancers_load_balancer_id_1": "[concat('/subscriptions/', parameters('subscriptions_id'), '/resourceGroups/', parameters('resource_name'), '/providers/Microsoft.Network/loadBalancers/load-balancer/backendAddressPools/backend-pool')]",
+    "loadBalancers_load_balancer_id_2": "[concat('/subscriptions/', parameters('subscriptions_id'), '/resourceGroups/', parameters('resource_name'), '/providers/Microsoft.Network/loadBalancers/load-balancer/probes/health-probe')]",
+    "virtualMachines_admin_name": "YOUR USER NAME",
+    "virtualMachines_admin_password": "YOUR PASSWORD",
     "SqlserverDatabaseName_Prod": "[concat(parameters('environment_name'), '.Web_Prod_v5')]",
     "SqlserverDatabaseName_Commerce": "[concat(parameters('environment_name'), '.Commerce_Prod_v5')]",
     "subnets_default_name": "default",
     "osDiskType": "Standard_LRS",
     "virtualMachineSize": "Standard_B2s",
-    "StorageAccountType": "Standard_LRS"
+    "StorageAccountType": "Standard_LRS",
+    "ResourceId": "RESOURCE ID"
   },
   "resources": [
     {
@@ -91,13 +96,13 @@
           }
         },
         "availabilitySet": {
-          "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySets_electrolux_vm_set_name'))]"
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySets_vm_set_name'))]"
         }
       },
       "tags": {},
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('cluster_1_network_interface_name'))]",
-        "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySets_electrolux_vm_set_name'))]",
+        "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySets_vm_set_name'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('StorageAccountName_vm'))]"
       ]
     },
@@ -147,12 +152,12 @@
           }
         },
         "availabilitySet": {
-          "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySets_electrolux_vm_set_name'))]"
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySets_vm_set_name'))]"
         }
       },
       "tags": {},
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySets_electrolux_vm_set_name'))]",
+        "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySets_vm_set_name'))]",
         "[resourceId('Microsoft.Network/networkInterfaces', variables('cluster_2_network_interface_name'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('StorageAccountName_vm'))]"
       ]
@@ -166,11 +171,11 @@
       "scale": null,
       "properties": {
         "provisioningState": "Succeeded",
-        "resourceGuid": "3d5f71dd-5742-4b84-be7e-5c4fcf3e7525",
+        "resourceGuid": "[parameters('ResourceId')]",
         "ipConfigurations": [
           {
             "name": "ipconfig1",
-            "etag": "W/\"621f26a3-9582-430d-9544-7653a965d38d\"",
+            "etag": "W/\"dfdf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "privateIPAddress": "10.0.0.5",
@@ -225,7 +230,7 @@
       "scale": null,
       "properties": {
         "provisioningState": "Succeeded",
-        "resourceGuid": "fa4daba5-6f8f-4a2b-bfd0-8be55e45e0d2",
+        "resourceGuid": "[parameters('ResourceId')]",
         "ipAddress": "13.67.43.246",
         "publicIPAddressVersion": "IPv4",
         "publicIPAllocationMethod": "Dynamic",
@@ -246,11 +251,11 @@
       "scale": null,
       "properties": {
         "provisioningState": "Succeeded",
-        "resourceGuid": "809efcae-875d-4ad7-922f-bf1c75b012b2",
+        "resourceGuid": "[parameters('ResourceId')]",
         "frontendIPConfigurations": [
           {
             "name": "LoadBalancerFrontEnd",
-            "etag": "W/\"724d4bb7-e2bd-4e35-82dc-3d3b9f969a83\"",
+            "etag": "W/\"dfdsf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "privateIPAllocationMethod": "Dynamic",
@@ -263,7 +268,7 @@
         "backendAddressPools": [
           {
             "name": "backend-pool",
-            "etag": "W/\"724d4bb7-e2bd-4e35-82dc-3d3b9f969a83\"",
+            "etag": "W/\"dfsdf\"",
             "properties": {
               "provisioningState": "Succeeded"
             }
@@ -272,7 +277,7 @@
         "loadBalancingRules": [
           {
             "name": "load-https-rule",
-            "etag": "W/\"724d4bb7-e2bd-4e35-82dc-3d3b9f969a83\"",
+            "etag": "W/\"dfsdfd\"",
             "properties": {
               "provisioningState": "Succeeded",
               "frontendIPConfiguration": {
@@ -297,7 +302,7 @@
         "probes": [
           {
             "name": "health-probe",
-            "etag": "W/\"724d4bb7-e2bd-4e35-82dc-3d3b9f969a83\"",
+            "etag": "W/\"fdfs\"",
             "properties": {
               "provisioningState": "Succeeded",
               "protocol": "Http",
@@ -328,13 +333,13 @@
       "scale": null,
       "properties": {
         "provisioningState": "Succeeded",
-        "resourceGuid": "3aa4707e-4422-4386-b160-29d3f5e39ff0",
+        "resourceGuid": "[parameters('ResourceId')]",
         "ipAddress": "13.76.226.26",
         "publicIPAddressVersion": "IPv4",
         "publicIPAllocationMethod": "Dynamic",
         "idleTimeoutInMinutes": 4,
         "dnsSettings": {
-          "domainNameLabel": "electrolux",
+          "domainNameLabel": "[parameters('environment_name')]",
           "fqdn": "[concat(parameters('environment_name'), '.', parameters('Location'), '.cloudapp.azure.com')]"
         },
         "ipTags": []
@@ -350,11 +355,11 @@
       "scale": null,
       "properties": {
         "provisioningState": "Succeeded",
-        "resourceGuid": "267abbf0-101a-488f-9643-5d744fd6cf43",
+        "resourceGuid": "[parameters('ResourceId')]",
         "ipConfigurations": [
           {
             "name": "ipconfig1",
-            "etag": "W/\"8976590f-92b9-4645-9b73-01344046f460\"",
+            "etag": "W/\"dfsdf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "privateIPAddress": "10.0.0.4",
@@ -409,7 +414,7 @@
       "scale": null,
       "properties": {
         "provisioningState": "Succeeded",
-        "resourceGuid": "bd15aeb4-cfda-4cbe-94cd-6cde4c015be4",
+        "resourceGuid": "[parameters('ResourceId')]",
         "ipAddress": "13.67.38.224",
         "publicIPAddressVersion": "IPv4",
         "publicIPAllocationMethod": "Dynamic",
@@ -456,11 +461,11 @@
       "scale": null,
       "properties": {
         "provisioningState": "Succeeded",
-        "resourceGuid": "fe7c2149-f8fe-44b1-8388-36a68e2d0960",
+        "resourceGuid": "[parameters('ResourceId')]",
         "securityRules": [
           {
             "name": "RDP",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"dfsdf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "protocol": "TCP",
@@ -479,7 +484,7 @@
           },
           {
             "name": "HTTP",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"fdsfdf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "protocol": "TCP",
@@ -498,7 +503,7 @@
           },
           {
             "name": "HTTPS",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"dfdsf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "protocol": "TCP",
@@ -519,7 +524,7 @@
         "defaultSecurityRules": [
           {
             "name": "AllowVnetInBound",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"dsfdsf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "description": "Allow inbound traffic from all VMs in VNET",
@@ -539,7 +544,7 @@
           },
           {
             "name": "AllowAzureLoadBalancerInBound",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"dsfsdf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "description": "Allow inbound traffic from azure load balancer",
@@ -559,7 +564,7 @@
           },
           {
             "name": "DenyAllInBound",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"dfsdfdf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "description": "Deny all inbound traffic",
@@ -579,7 +584,7 @@
           },
           {
             "name": "AllowVnetOutBound",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"dfsdfds\"",
             "properties": {
               "provisioningState": "Succeeded",
               "description": "Allow outbound traffic from all VMs to all VMs in VNET",
@@ -599,7 +604,7 @@
           },
           {
             "name": "AllowInternetOutBound",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"dfsdfds\"",
             "properties": {
               "provisioningState": "Succeeded",
               "description": "Allow outbound traffic from all VMs to Internet",
@@ -619,7 +624,7 @@
           },
           {
             "name": "DenyAllOutBound",
-            "etag": "W/\"e4712136-b5c4-4214-a915-52aad6d05e48\"",
+            "etag": "W/\"fdsfsdf\"",
             "properties": {
               "provisioningState": "Succeeded",
               "description": "Deny all outbound traffic",
@@ -650,7 +655,7 @@
       "scale": null,
       "properties": {
         "provisioningState": "Succeeded",
-        "resourceGuid": "0b780d2a-1482-4682-9c13-840ee4d06f1f",
+        "resourceGuid": "[parameters('ResourceId')]",
         "addressSpace": {
           "addressPrefixes": [
             "10.0.0.0/24"
@@ -659,7 +664,7 @@
         "subnets": [
           {
             "name": "default",
-            "etag": "W/\"7ac652ec-994c-44d3-98d6-5324b071ded7\"",
+            "etag": "W/\"dfsdfds\"",
             "properties": {
               "provisioningState": "Succeeded",
               "addressPrefix": "10.0.0.0/24",
